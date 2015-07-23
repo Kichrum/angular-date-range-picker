@@ -78,7 +78,7 @@
             } else {
               $scope.selection = false;
               $scope.selection = $scope.model || false;
-              $scope.date = moment($scope.model) || moment();
+              $scope.date = moment($scope.model || void 0);
               return $scope.range = moment().range(moment($scope.date).startOf("month"), moment($scope.date).endOf("month"));
             }
           };
@@ -163,6 +163,7 @@
                 $event.stopPropagation();
               }
             }
+            $scope.selecting = false;
             $scope.visible = false;
             return $scope.start = null;
           };
@@ -174,6 +175,11 @@
               if (typeof $event.stopPropagation === "function") {
                 $event.stopPropagation();
               }
+            }
+            if ($scope.selecting) {
+              $scope.select({
+                date: $scope.start.clone()
+              });
             }
             $scope.model = $scope.selection;
             $timeout(function() {
